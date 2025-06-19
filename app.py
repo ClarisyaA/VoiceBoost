@@ -16,24 +16,48 @@ from textdistance import levenshtein
 import re
 from scipy.signal import wiener
 
-def convert_numpy_types(obj):
-    """Convert numpy types to Python native types for JSON serialization"""
+import pandas as pd
+from typing import Any, Dict, List, Union
+
+def convert_numpy_to_python(obj: Any) -> Any:
+    """
+    Recursively convert numpy types to native Python types.
+    This prevents JSON serialization errors in Streamlit.
+    """
     if isinstance(obj, dict):
-        return {key: convert_numpy_types(value) for key, value in obj.items()}
-    elif isinstance(obj, list):
-        return [convert_numpy_types(item) for item in obj]
-    elif isinstance(obj, tuple):
-        return tuple(convert_numpy_types(item) for item in obj)
+        return {key: convert_numpy_to_python(value) for key, value in obj.items()}
+    elif isinstance(obj, (list, tuple)):
+        return [convert_numpy_to_python(item) for item in obj]
+    elif isinstance(obj, np.ndarray):
+        return obj.tolist()
     elif isinstance(obj, np.integer):
         return int(obj)
     elif isinstance(obj, np.floating):
         return float(obj)
-    elif isinstance(obj, np.ndarray):
-        return obj.tolist()
-    elif isinstance(obj, (np.bool_, bool)):
+    elif isinstance(obj, np.bool_):
         return bool(obj)
+    elif isinstance(obj, np.complexfloating):
+        return complex(obj)
+    elif hasattr(obj, 'item'):  # Handle other numpy scalar types
+        return obj.item()
     else:
         return obj
+
+def safe_feature_extraction(extract_features_func, *args, **kwargs) -> Dict[str, Any]:
+    """
+    Wrapper function for feature extraction that ensures all numpy types are converted.
+    """
+    try:
+        # Call your original feature extraction function
+        features = extract_features_func(*args, **kwargs)
+        
+        # Convert all numpy types to Python types
+        converted_features = convert_numpy_to_python(features)
+        
+        return converted_features
+    except Exception as e:
+        print(f"Error in feature extraction: {e}")
+        return {}
 
 word_list = [
     # Kata-kata dengan vokal yang jelas untuk analisis formant
@@ -889,6 +913,8 @@ def main():
                 )
                 if uploaded_file is not None:
                     audio_data = uploaded_file
+                    features = safe_feature_extraction(extract_features, audio_data, sr)
+                    features = {k: float(v) if hasattr(v, 'item') and hasattr(v, 'dtype') else v for k, v in features.items()}
             
             # Process audio if available
             if audio_data is not None:
@@ -921,6 +947,15 @@ def main():
                     "{transcription}"
                 </div>
                 """, unsafe_allow_html=True)
+
+                def fix_features_before_display(features: Dict[str, Any]) -> Dict[str, Any]:
+                """
+                Convert features dictionary right before displaying in Streamlit.
+                Add this right before your first st.metric() call.
+                """
+                return convert_numpy_to_python(features)
+
+                features = fix_features_before_display(features)
                 
                 # Analysis results
                 if prediction is not None:

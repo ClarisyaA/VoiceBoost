@@ -16,10 +16,6 @@ from textdistance import levenshtein
 import re
 from scipy.signal import wiener
 
-# Tambahkan setelah imports, sebelum fungsi main
-import json
-import numpy as np
-
 def convert_numpy_types(obj):
     """Convert numpy types to Python native types for JSON serialization"""
     if isinstance(obj, dict):

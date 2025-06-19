@@ -19,6 +19,8 @@ from scipy.signal import wiener
 import pandas as pd
 from typing import Any, Dict, List, Union
 
+import logging
+
 def convert_numpy_to_python(obj: Any) -> Any:
     """
     Recursively convert numpy types to native Python types.
@@ -39,7 +41,16 @@ def convert_numpy_to_python(obj: Any) -> Any:
     elif isinstance(obj, np.complexfloating):
         return complex(obj)
     elif hasattr(obj, 'item'):  # Handle other numpy scalar types
-        return obj.item()
+        try:
+            return obj.item()
+        except (ValueError, TypeError):
+            # If item() fails, try converting to float/int
+            if hasattr(obj, 'dtype'):
+                if 'int' in str(obj.dtype):
+                    return int(obj)
+                elif 'float' in str(obj.dtype):
+                    return float(obj)
+            return obj
     else:
         return obj
 
@@ -56,7 +67,8 @@ def safe_feature_extraction(extract_features_func, *args, **kwargs) -> Dict[str,
         
         return converted_features
     except Exception as e:
-        print(f"Error in feature extraction: {e}")
+        # Use logging instead of print for better error tracking
+        logging.error(f"Error in feature extraction: {e}")
         return {}
 
 word_list = [
@@ -635,7 +647,7 @@ class DysarthriaAnalyzer:
             **jitter_shimmer_features, **duration_features, 
             **voice_quality_features, **wer_features
         }
-        return all_features
+        return convert_numpy_to_python(all_features)
     
     def predict(self, audio_path):
         if self.model is None or self.scaler is None:
@@ -914,7 +926,6 @@ def main():
                 if uploaded_file is not None:
                     audio_data = uploaded_file
                     features = safe_feature_extraction(extract_features, audio_data, sr)
-                    features = {k: float(v) if hasattr(v, 'item') and hasattr(v, 'dtype') else v for k, v in features.items()}
             
             # Process audio if available
             if audio_data is not None:

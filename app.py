@@ -946,7 +946,7 @@ def main():
                             """, unsafe_allow_html=True)
                             confidence = probability[0] * 100
                         
-                        st.metric("Confidence Level", f"{confidence:.1f}%")
+                        st.metric("Confidence Level", f"{float(confidence):.1f}%") 
                     
                     with col2:
                         st.markdown("**Detailed Probabilities:**")
@@ -984,16 +984,16 @@ def main():
                         st.subheader("🎵 Formant Analysis")
                         col1, col2, col3, col4 = st.columns(4)
                         with col1:
-                            st.metric("F1 Mean (Hz)", f"{features.get('f1_mean', 0):.1f}")
-                            st.metric("F1 Std Dev", f"{features.get('f1_std', 0):.1f}")
+                            st.metric("F1 Mean (Hz)", f"{float(features.get('f1_mean', 0)):.1f}")
+                            st.metric("F1 Std Dev", f"{float(features.get('f1_std', 0)):.1f}")
                         with col2:
-                            st.metric("F2 Mean (Hz)", f"{features.get('f2_mean', 0):.1f}")
-                            st.metric("F2 Std Dev", f"{features.get('f2_std', 0):.1f}")
+                            st.metric("F2 Mean (Hz)", f"{float(features.get('f2_mean', 0)):.1f}")
+                            st.metric("F2 Std Dev", f"{float(features.get('f2_std', 0)):.1f}")
                         with col3:
-                            st.metric("F3 Mean (Hz)", f"{features.get('f3_mean', 0):.1f}")
-                            st.metric("F3 Std Dev", f"{features.get('f3_std', 0):.1f}")
+                            st.metric("F3 Mean (Hz)", f"{float(features.get('f3_mean', 0)):.1f}")
+                            st.metric("F3 Std Dev", f"{float(features.get('f3_std', 0)):.1f}")
                         with col4:
-                            st.metric("VSA", f"{features.get('vsa', 0):.1f}")
+                            st.metric("VSA", f"{float(features.get('vsa', 0)):.1f}")
                         
                         st.divider()
                         
@@ -1001,70 +1001,72 @@ def main():
                         st.subheader("🎼 Prosodic Features")
                         col1, col2, col3 = st.columns(3)
                         with col1:
-                            st.metric("Pitch Mean (Hz)", f"{features.get('pitch_mean', 0):.1f}")
-                            st.metric("Pitch Std Dev", f"{features.get('pitch_std', 0):.1f}")
-                            st.metric("Pitch Range (Hz)", f"{features.get('pitch_range', 0):.1f}")
+                            st.metric("Pitch Mean (Hz)", f"{float(features.get('pitch_mean', 0)):.1f}")
+                            st.metric("Pitch Std Dev", f"{float(features.get('pitch_std', 0)):.1f}")
+                            st.metric("Pitch Range (Hz)", f"{float(features.get('pitch_range', 0)):.1f}")
                         with col2:
-                            st.metric("Intensity Mean (dB)", f"{features.get('intensity_mean', 0):.1f}")
-                            st.metric("Intensity Std Dev", f"{features.get('intensity_std', 0):.1f}")
-                            st.metric("Intensity Range (dB)", f"{features.get('intensity_range', 0):.1f}")
+                            st.metric("Intensity Mean (dB)", f"{float(features.get('intensity_mean', 0)):.1f}")
+                            st.metric("Intensity Std Dev", f"{float(features.get('intensity_std', 0)):.1f}")
+                            st.metric("Intensity Range (dB)", f"{float(features.get('intensity_range', 0)):.1f}")
                         with col3:
-                            st.metric("Speaking Rate", f"{features.get('speaking_rate', 0):.1f}")
+                            st.metric("Speaking Rate", f"{float(features.get('speaking_rate', 0)):.1f}")
                         
                         st.divider()
                         
                         # Voice Quality Features
-                        st.subheader("🎤 Voice Quality")
+                        st.subheader("🎙️ Voice Quality Features")
                         col1, col2, col3, col4 = st.columns(4)
                         with col1:
-                            st.metric("Jitter Local", f"{features.get('jitter_local', 0):.4f}")
-                            st.metric("Jitter RAP", f"{features.get('jitter_rap', 0):.4f}")
+                            st.metric("Jitter Local", f"{float(features.get('jitter_local', 0)):.4f}")
+                            st.metric("Jitter RAP", f"{float(features.get('jitter_rap', 0)):.4f}")
                         with col2:
-                            st.metric("Shimmer Local", f"{features.get('shimmer_local', 0):.4f}")
-                            st.metric("Shimmer dB", f"{features.get('shimmer_db', 0):.3f}")
+                            st.metric("Shimmer Local", f"{float(features.get('shimmer_local', 0)):.4f}")
+                            st.metric("Shimmer dB", f"{float(features.get('shimmer_db', 0)):.3f}")
                         with col3:
-                            st.metric("HNR Mean (dB)", f"{features.get('hnr_mean', 0):.2f}")
-                            st.metric("Breathiness", f"{features.get('breathiness', 0):.4f}")
+                            st.metric("HNR Mean (dB)", f"{float(features.get('hnr_mean', 0)):.2f}")
+                            st.metric("Breathiness", f"{float(features.get('breathiness', 0)):.4f}")
                         with col4:
-                            st.metric("Roughness", f"{features.get('roughness', 0):.4f}")
-                            st.metric("Spectral Flatness", f"{features.get('spectral_flatness', 0):.4f}")
+                            st.metric("Roughness", f"{float(features.get('roughness', 0)):.4f}")
+                            st.metric("Spectral Flatness", f"{float(features.get('spectral_flatness', 0)):.4f}")
                         
                         st.divider()
+
                         
                         # Duration Features
                         st.subheader("⏱️ Temporal Features")
                         col1, col2, col3, col4 = st.columns(4)
                         with col1:
-                            st.metric("Utterance Duration (s)", f"{features.get('utterance_duration', 0):.2f}")
+                            st.metric("Utterance Duration (s)", f"{float(features.get('utterance_duration', 0)):.2f}")
                         with col2:
-                            st.metric("Phonation Time Ratio", f"{features.get('phonation_time_ratio', 0):.3f}")
+                            st.metric("Phonation Time Ratio", f"{float(features.get('phonation_time_ratio', 0)):.3f}")
                         with col3:
-                            st.metric("Pause Count", f"{features.get('pause_count', 0)}")
+                            st.metric("Pause Count", f"{int(features.get('pause_count', 0))}")  # Use int() for count
                         with col4:
-                            st.metric("Avg Pause Duration (s)", f"{features.get('average_pause_duration', 0):.3f}")
+                            st.metric("Avg Pause Duration (s)", f"{float(features.get('average_pause_duration', 0)):.3f}")
                         
                         st.divider()
-                        
+                                                
                         # Spectral Features
-                        st.subheader("🌊 Spectral Analysis")
+                        st.subheader("🎵 Spectral Analysis")
                         col1, col2, col3 = st.columns(3)
                         with col1:
-                            st.metric("Spectral Centroid Mean", f"{features.get('spectral_centroid_mean', 0):.1f}")
-                            st.metric("Spectral Centroid Std", f"{features.get('spectral_centroid_std', 0):.1f}")
+                            st.metric("Spectral Centroid Mean", f"{float(features.get('spectral_centroid_mean', 0)):.1f}")
+                            st.metric("Spectral Centroid Std", f"{float(features.get('spectral_centroid_std', 0)):.1f}")
                         with col2:
-                            st.metric("Spectral Bandwidth Mean", f"{features.get('spectral_bandwidth_mean', 0):.1f}")
-                            st.metric("Spectral Rolloff Mean", f"{features.get('spectral_rolloff_mean', 0):.1f}")
+                            st.metric("Spectral Bandwidth Mean", f"{float(features.get('spectral_bandwidth_mean', 0)):.1f}")
+                            st.metric("Spectral Rolloff Mean", f"{float(features.get('spectral_rolloff_mean', 0)):.1f}")
                         with col3:
-                            st.metric("Zero Crossing Rate", f"{features.get('zero_crossing_rate_mean', 0):.4f}")
+                            st.metric("Zero Crossing Rate", f"{float(features.get('zero_crossing_rate_mean', 0)):.4f}")
                         
+                        st.divider()  
                         # MFCC Features
-                        st.subheader("🎯 MFCC Features")
+                        st.subheader("🎚️ MFCC Features")
                         mfcc_cols = st.columns(4)
                         for i in range(13):
                             col_idx = i % 4
                             with mfcc_cols[col_idx]:
-                                st.metric(f"MFCC {i} Mean", f"{features.get(f'mfcc_{i}_mean', 0):.3f}")
-                                st.metric(f"MFCC {i} Std", f"{features.get(f'mfcc_{i}_std', 0):.3f}")
+                                st.metric(f"MFCC {i} Mean", f"{float(features.get(f'mfcc_{i}_mean', 0)):.3f}")
+                                st.metric(f"MFCC {i} Std", f"{float(features.get(f'mfcc_{i}_std', 0)):.3f}")
                         
                         st.divider()
                         
@@ -1072,9 +1074,9 @@ def main():
                         st.subheader("📝 Speech Recognition")
                         col1, col2 = st.columns(2)
                         with col1:
-                            st.metric("Word Error Rate", f"{features.get('word_error_rate', 0):.3f}")
+                            st.metric("Word Error Rate", f"{float(features.get('word_error_rate', 0)):.3f}")
                         with col2:
-                            st.metric("Word Count", f"{features.get('word_count', 0)}")
+                            st.metric("Word Count", f"{int(features.get('word_count', 0))}")  # Use int() for count
                         
                         # Feature Summary
                         st.divider()

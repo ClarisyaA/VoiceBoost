@@ -1,14 +1,13 @@
-streamlit>=1.28.0
-streamlit-audiorecorder>=0.0.5
-librosa>=0.10.0
-scikit-learn>=1.3.0
-numpy>=1.24.0
-pandas>=2.0.0
-gtts>=2.3.0
-openai-whisper==20231117
-soundfile>=0.12.0
-scipy>=1.10.0
-matplotlib>=3.7.0
-seaborn>=0.12.0
-praat-parselmouth>=0.4.0
-textdistance>=4.5.0
+streamlit
+numpy
+librosa
+gTTS
+praat-parselmouth
+git+https://github.com/openai/whisper.git
+joblib
+scipy
+textdistance
+
+# python -m venv .venv
+# .venv\Scripts\activate
+# pip install -r requirements.txt

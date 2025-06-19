@@ -1067,7 +1067,7 @@ def main():
                         # Download raw features
                         if st.button("📥 Download Raw Features (JSON)"):
                             import json
-                            features_json = json.dumps(features, indent=2)
+                            features_json = json.dumps(features, indent=2, default=str)
                             st.download_button(
                                 label="Download Features",
                                 data=features_json,

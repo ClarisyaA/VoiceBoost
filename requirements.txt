@@ -1,13 +1,12 @@
-parselmouth==0.5 
 streamlit==1.46.0
 streamlit-audiorecorder==0.0.6
 librosa==0.11.0
 scikit-learn>=1.1.0
 numpy==1.23.0
-pandas==1.5.3  
+pandas==1.5.3  # Compatible version for parselmouth
 gtts==2.5.4
 openai-whisper==20240930
 llvmlite==0.36.0
 setuptools==65.5.0
 ffmpeg-python
-
+parselmouth==0.5  # Version compatible with pandas 1.5.3

@@ -16,6 +16,29 @@ from textdistance import levenshtein
 import re
 from scipy.signal import wiener
 
+# Tambahkan setelah imports, sebelum fungsi main
+import json
+import numpy as np
+
+def convert_numpy_types(obj):
+    """Convert numpy types to Python native types for JSON serialization"""
+    if isinstance(obj, dict):
+        return {key: convert_numpy_types(value) for key, value in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_numpy_types(item) for item in obj]
+    elif isinstance(obj, tuple):
+        return tuple(convert_numpy_types(item) for item in obj)
+    elif isinstance(obj, np.integer):
+        return int(obj)
+    elif isinstance(obj, np.floating):
+        return float(obj)
+    elif isinstance(obj, np.ndarray):
+        return obj.tolist()
+    elif isinstance(obj, (np.bool_, bool)):
+        return bool(obj)
+    else:
+        return obj
+
 word_list = [
     # Kata-kata dengan vokal yang jelas untuk analisis formant
     "beat", "bit", "bet", "bat", "boot", "book", "boat", "bought", "but", "bot",
@@ -1067,7 +1090,8 @@ def main():
                         # Download raw features
                         if st.button("📥 Download Raw Features (JSON)"):
                             import json
-                            features_json = json.dumps(features, indent=2, default=str)
+                            features_clean = convert_numpy_types(features)
+                            features_json = json.dumps(features, indent=2)
                             st.download_button(
                                 label="Download Features",
                                 data=features_json,

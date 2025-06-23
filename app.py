@@ -960,10 +960,10 @@ def main():
                 """, unsafe_allow_html=True)
 
                 def fix_features_before_display(features: Dict[str, Any]) -> Dict[str, Any]:
-                """
-                Convert features dictionary right before displaying in Streamlit.
-                Add this right before your first st.metric() call.
-                """
+                    """
+                    Convert features dictionary right before displaying in Streamlit.
+                    Add this right before your first st.metric() call.
+                    """
                     return convert_numpy_to_python(features)
     
                     features = fix_features_before_display(features)
